@@ -1,6 +1,6 @@
 """ Module srс.adapters.repositories.postgresql """
+from typing import List
 
-from loguru import logger
 from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 from sqlalchemy.orm import immediateload
@@ -9,13 +9,20 @@ from src.adapters.orm import (Document, DocumentRubric, Rubric,
                               async_session_factory)
 from src.adapters.repositories import AbstractRepository
 from src.domain.entities import Document as DocumentEntity
+from src.domain.entities.base_entity import BaseEntity
 
 
 class DocumentRepository(AbstractRepository):
     def __init__(self, async_session_factory_: async_sessionmaker[AsyncSession] = async_session_factory):
         self.async_session: async_sessionmaker[AsyncSession] = async_session_factory_
 
-    async def get_all(self):
+    async def get_all(self) -> List[BaseEntity]:
+        """
+        Method for getting collection of entities.
+
+        :return: List[BaseEntity]: collection itself
+        """
+
         async with self.async_session() as session:
             stmt = select(Document).options(immediateload(Document.rubrics))
             items = await session.scalars(stmt)
@@ -34,45 +41,60 @@ class DocumentRepository(AbstractRepository):
         raise NotImplementedError
 
     async def create(self, item: DocumentEntity):
-        async with self.async_session() as session:
-            async with session.begin():
+        """
+        Method for entity creation.
 
-                # create rubrics if needed
-                rubric_ids = []
-                for rubric in item.rubrics:
-                    stmt = select(Rubric.id).filter_by(value=rubric)
-                    rubric_id = await session.scalar(stmt)
-                    if rubric_id is None:
-                        new_rubric = Rubric(value=rubric)
-                        session.add(new_rubric)
-                        await session.flush()
-                        rubric_ids.append(new_rubric.id)
-                    else:
-                        rubric_ids.append(rubric_id)
+        :param item: BaseEntity
+        :return: None
+        """
 
-                logger.info(f"Rubric_ids: {rubric_ids}")
+        async with self.async_session() as session, session.begin():
 
-                # create the document
-                new_document = Document(text=item.text)
-                session.add(new_document)
-                await session.flush()
+            # create rubrics if needed
+            rubric_ids = []
+            for rubric in item.rubrics:
+                stmt = select(Rubric.id).filter_by(value=rubric)
+                rubric_id = await session.scalar(stmt)
+                if rubric_id is None:
+                    new_rubric = Rubric(value=rubric)
+                    session.add(new_rubric)
+                    await session.flush()
+                    rubric_ids.append(new_rubric.id)
+                else:
+                    rubric_ids.append(rubric_id)
 
-                # create document rubrics
-                for rubric_id in rubric_ids:
-                    session.add(
-                        DocumentRubric(
-                            document_id=new_document.id,
-                            rubric_id=rubric_id,
-                        )
+            # create the document
+            new_document = Document(text=item.text)
+            session.add(new_document)
+            await session.flush()
+
+            # create document rubrics
+            for rubric_id in rubric_ids:
+                session.add(
+                    DocumentRubric(
+                        document_id=new_document.id,
+                        rubric_id=rubric_id,
                     )
+                )
 
     async def delete_by_id(self, id_):
-        async with self.async_session() as session:
-            async with session.begin():
-                stmt = delete(DocumentRubric).filter_by(document_id=id_)
-                await session.execute(stmt)
-                stmt = delete(Document).filter_by(id=id_)
-                await session.execute(stmt)
+        """
+        Method for deleting entity by the primary key value.
+
+        :param id_: Integer: primary key value
+        :return: None
+        """
+
+        async with self.async_session() as session, session.begin():
+
+            # delete connected with doc DocumentRubrics
+            # it's like cascade deleting
+            stmt = delete(DocumentRubric).filter_by(document_id=id_)
+            await session.execute(stmt)
+
+            # delete doc
+            stmt = delete(Document).filter_by(id=id_)
+            await session.execute(stmt)
 
     async def update(self, item):
         raise NotImplementedError
