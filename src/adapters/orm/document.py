@@ -1,6 +1,6 @@
 """ Module srс.adapters.orm """
 
-from datetime import date
+from datetime import datetime
 from typing import List
 
 from sqlalchemy import func
@@ -24,7 +24,7 @@ class Document:
         backref="rubrics",
         secondary="document_rubrics",
     )
-    created_date: Mapped[date] = mapped_column(
-        insert_default=func.current_date(),
+    created_date: Mapped[datetime] = mapped_column(
+        insert_default=func.now(),
         default=None,
     )

@@ -64,7 +64,10 @@ class DocumentRepository(AbstractRepository):
                     rubric_ids.append(rubric_id)
 
             # create the document
-            new_document = Document(text=item.text)
+            new_document = Document(
+                text=item.text,
+                created_date=item.created_date,
+            )
             session.add(new_document)
             await session.flush()
 

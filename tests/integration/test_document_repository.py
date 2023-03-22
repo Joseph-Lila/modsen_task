@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import datetime
 
 import pytest
 
@@ -20,13 +20,13 @@ async def test_department_repository_create_and_get_all(
         DocumentEntity(
             id=1,
             text='Some text 1',
-            created_date=date.today(),
+            created_date=datetime.now(),
             rubrics=['RUBRIC-1', 'RUBRIC-2']
         ),
         DocumentEntity(
             id=2,
             text='Some text 2',
-            created_date=date.today(),
+            created_date=datetime.now(),
             rubrics=['RUBRIC-1', 'RUBRIC-3']
         )
     ]
@@ -51,13 +51,13 @@ async def test_department_repository_create_and_get_all_and_delete(
         DocumentEntity(
             id=1,
             text='Some text 1',
-            created_date=date.today(),
+            created_date=datetime.now(),
             rubrics=['RUBRIC-1', 'RUBRIC-2']
         ),
         DocumentEntity(
             id=2,
             text='Some text 2',
-            created_date=date.today(),
+            created_date=datetime.now(),
             rubrics=['RUBRIC-1', 'RUBRIC-3']
         )
     ]

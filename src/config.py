@@ -38,3 +38,11 @@ def get_postgres_uri() -> str:
     user = os.environ['POSTGRESQL_USERNAME']
     db_name = os.environ['POSTGRESQL_MAINTENANCE_DATABASE']
     return f"postgresql+asyncpg://{user}:{password}@{host}:{port}/{db_name}"
+
+
+def get_test_data_csv_path() -> str:
+    """
+    Method to get path to csv file with test data.
+    :return: Str: path to csv.
+    """
+    return str(ROOT_DIR / 'assets' / 'task' / 'posts.csv')
