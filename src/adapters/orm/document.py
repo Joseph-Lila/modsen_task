@@ -1,6 +1,11 @@
-from sqlalchemy.orm import Mapped, mapped_column
+""" Module srс.adapters.orm """
+
 from datetime import date
+from typing import List
+
 from sqlalchemy import func
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from src.adapters.orm import mapper_registry
 
 
@@ -8,8 +13,17 @@ from src.adapters.orm import mapper_registry
 class Document:
     __tablename__ = 'documents'
 
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    title: Mapped[str]
+    id: Mapped[int] = mapped_column(
+        init=False,
+        primary_key=True,
+        autoincrement=True,
+    )
+    text: Mapped[str]
+    rubrics: Mapped[List["Rubric"]] = relationship(
+        default_factory=list,
+        backref="rubrics",
+        secondary="document_rubrics",
+    )
     created_date: Mapped[date] = mapped_column(
         insert_default=func.current_date(),
         default=None,

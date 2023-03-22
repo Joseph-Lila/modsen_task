@@ -1,3 +1,5 @@
+""" Module srс.adapters.repositories """
+
 import abc
 
 

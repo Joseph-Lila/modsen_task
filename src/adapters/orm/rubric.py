@@ -1,4 +1,7 @@
+""" Module srс.adapters.orm """
+
 from sqlalchemy.orm import Mapped, mapped_column
+
 from src.adapters.orm import mapper_registry
 
 
@@ -6,5 +9,9 @@ from src.adapters.orm import mapper_registry
 class Rubric:
     __tablename__ = 'rubrics'
 
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    id: Mapped[int] = mapped_column(
+        init=False,
+        primary_key=True,
+        autoincrement=True,
+    )
     value: Mapped[str]

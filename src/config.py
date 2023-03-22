@@ -14,6 +14,19 @@ if DOTENV_PATH.exists():
     load_dotenv(DOTENV_PATH)
 
 
+def get_test_postgres_uri() -> str:
+    """
+    Method to get connection string for testing PostgreSQL server.
+    :return: str: connection string.
+    """
+    host = os.environ['POSTGRESQL_TEST_HOST']
+    port = os.environ['POSTGRESQL_TEST_PORT']
+    password = os.environ['POSTGRESQL_TEST_PASSWORD']
+    user = os.environ['POSTGRESQL_TEST_USERNAME']
+    db_name = os.environ['POSTGRESQL_TEST_MAINTENANCE_DATABASE']
+    return f"postgresql+asyncpg://{user}:{password}@{host}:{port}/{db_name}"
+
+
 def get_postgres_uri() -> str:
     """
     Method to get connection string for PostgreSQL server.
