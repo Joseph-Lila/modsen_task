@@ -1,5 +1,5 @@
 """ Module srс.adapters.repositories.postgresql """
-from typing import List
+from typing import List, Optional
 
 from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
@@ -19,7 +19,7 @@ class DocumentRepository(AbstractRepository):
         """
         Method for getting collection of entities.
 
-        :return: List[BaseEntity]: collection itself
+        :return: List[DocumentEntity]: collection itself
         """
 
         async with self.async_session() as session:
@@ -36,8 +36,16 @@ class DocumentRepository(AbstractRepository):
         ]
         return answer
 
-    async def get_by_id(self, id_):
-        raise NotImplementedError
+    async def get_by_id(self, id_) -> Optional[DocumentEntity]:
+        """
+        Method for getting entity by id.
+
+        :return: Optional[DocumentEntity]: collection itself
+        """
+        async with self.async_session() as session:
+            stmt = select(Document).filter_by(id=id_)
+            result = await session.scalar(stmt)
+        return result
 
     async def create(self, item: DocumentEntity):
         """

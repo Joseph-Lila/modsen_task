@@ -1,2 +1,3 @@
 from .added_record import AddedRecord
+from .document_is_deleted import DocumentIsDeleted
 from .got_first_20_records_by_match import GotFirst20RecordsByMatch

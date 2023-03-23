@@ -1,7 +1,6 @@
 from elastic_transport import ObjectApiResponse
 from elasticsearch import AsyncElasticsearch
 
-from src import config
 from src.adapters.repositories import AbstractRepositoriesManager
 from src.domain.commands import (AddRecord, DeleteRecord,
                                  GetFirst20RecordsByMatch)
@@ -24,11 +23,8 @@ MAPPING_FOR_INDEX = {
 }
 
 
-elastic_client = AsyncElasticsearch(config.get_elasticsearch_uri())
-
-
 async def create_index(
-        elasticsearch_client: AsyncElasticsearch = elastic_client,
+        elasticsearch_client: AsyncElasticsearch,
         index_title=INDEX_TITLE,
         mappings=MAPPING_FOR_INDEX,
 ):
@@ -47,7 +43,7 @@ async def create_index(
 
 
 async def delete_index(
-        elasticsearch_client: AsyncElasticsearch = elastic_client,
+        elasticsearch_client: AsyncElasticsearch,
         index_title=INDEX_TITLE,
 ):
     """
@@ -62,7 +58,7 @@ async def delete_index(
 
 async def add_record(
         cmd: AddRecord,
-        elasticsearch_client: AsyncElasticsearch = elastic_client,
+        elasticsearch_client: AsyncElasticsearch,
         index_title=INDEX_TITLE,
 ) -> ObjectApiResponse:
     """
@@ -85,7 +81,7 @@ async def add_record(
 
 async def delete_record(
         cmd: DeleteRecord,
-        elasticsearch_client: AsyncElasticsearch = elastic_client,
+        elasticsearch_client: AsyncElasticsearch,
         index_title=INDEX_TITLE,
 ):
     """
@@ -108,7 +104,7 @@ async def delete_record(
 
 async def get_first_20_records_by_match(
         cmd: GetFirst20RecordsByMatch,
-        elasticsearch_client: AsyncElasticsearch = elastic_client,
+        elasticsearch_client: AsyncElasticsearch,
         index_title=INDEX_TITLE,
 ) -> ObjectApiResponse:
     """
@@ -133,7 +129,7 @@ async def get_first_20_records_by_match(
 
 async def init_elasticsearch_with_db(
         repositories_manager: AbstractRepositoriesManager,
-        elasticsearch_client: AsyncElasticsearch = elastic_client,
+        elasticsearch_client: AsyncElasticsearch,
 ):
     """
     Method to initialize elasticsearch with data in the database.
