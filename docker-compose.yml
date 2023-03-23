@@ -1,0 +1,37 @@
+version: "3"
+
+services:
+
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    depends_on:
+      - elasticsearch
+      - postgres
+
+  elasticsearch:
+    container_name: es-container
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.2.3
+    environment:
+      - xpack.security.enabled=false
+      - "discovery.type=single-node"
+    networks:
+      - es-net
+    ports:
+      - "9200:9200"
+
+  postgres:
+    image: postgres:9.6
+    environment:
+      - POSTGRESQL_HOST = 'localhost'
+      - POSTGRESQL_PORT = 5432
+      - POSTGRESQL_MAINTENANCE_DATABASE = 'modsen'
+      - POSTGRESQL_USERNAME = 'student'
+      - POSTGRESQL_PASSWORD = 'student'
+    ports:
+      - "5432:5432"
+
+networks:
+  es-net:
+    driver: bridge
