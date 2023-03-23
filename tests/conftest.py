@@ -39,6 +39,11 @@ def elasticsearch_host():
 
 
 @pytest.fixture
+def initial_csv_path():
+    return config.get_csv_path_for_testing()
+
+
+@pytest.fixture
 def elastic_client(
         elasticsearch_host,
 ):

@@ -43,7 +43,7 @@ class DocumentRepository(AbstractRepository):
         :return: Optional[DocumentEntity]: collection itself
         """
         async with self.async_session() as session:
-            stmt = select(Document).filter_by(id=id_)
+            stmt = select(Document).filter_by(id=id_).options(immediateload(Document.rubrics))
             result = await session.scalar(stmt)
         return result
 

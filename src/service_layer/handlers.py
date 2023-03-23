@@ -21,12 +21,14 @@ async def get_first_20_records_by_match_sorted(
         cmd: GetFirst20RecordsByMatch,
         repositories_manager: AbstractRepositoriesManager,
         elastic_client: AsyncElasticsearch,
+        index_title: str,
 ) -> GotFirst20RecordsByMatch:
     result: ObjectApiResponse = await get_first_20_records_by_match(
         cmd=cmd,
         elasticsearch_client=elastic_client,
+        index_title=index_title,
     )
-    ids = [value['id'] for value in result['hits']['hits']]
+    ids = [value['_source']['id'] for value in result['hits']['hits']]
     documents = []
     for id_ in ids:
         doc = await repositories_manager.documents.get_by_id(id_)
@@ -40,11 +42,13 @@ async def remove_doc_by_id(
         cmd: DeleteRecord,
         repositories_manager: AbstractRepositoriesManager,
         elastic_client: AsyncElasticsearch,
+        index_title: str,
 ) -> DocumentIsDeleted:
     # remove from elastic
     await delete_record(
         cmd=cmd,
         elasticsearch_client=elastic_client,
+        index_title=index_title,
     )
 
     # delete from database

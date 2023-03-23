@@ -130,12 +130,14 @@ async def get_first_20_records_by_match(
 async def init_elasticsearch_with_db(
         repositories_manager: AbstractRepositoriesManager,
         elasticsearch_client: AsyncElasticsearch,
+        index_title: str,
 ):
     """
     Method to initialize elasticsearch with data in the database.
 
     :param repositories_manager: AbstractRepositoriesManager
     :param elasticsearch_client: AsyncElasticsearch
+    :param index_title: str
     :return: None
     """
     documents = await repositories_manager.documents.get_all()
@@ -146,4 +148,5 @@ async def init_elasticsearch_with_db(
                 text=doc.text,
             ),
             elasticsearch_client=elasticsearch_client,
+            index_title=index_title,
         )

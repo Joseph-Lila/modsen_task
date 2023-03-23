@@ -48,6 +48,14 @@ def get_test_data_csv_path() -> str:
     return str(ROOT_DIR / 'assets' / 'task' / 'posts.csv')
 
 
+def get_csv_path_for_testing() -> str:
+    """
+    Method to get path to csv file with data for testing.
+    :return: Str: path to csv.
+    """
+    return str(ROOT_DIR / 'assets' / 'task' / 'test_data.csv')
+
+
 def get_elasticsearch_uri() -> str:
     """
     Method to get elasticsearch uri.
