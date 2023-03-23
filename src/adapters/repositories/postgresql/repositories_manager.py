@@ -2,6 +2,7 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 from src import config
 from src.domain.utils import CSVManipulator
+
 from ...orm import async_session_factory
 from ..abstract_repositories_manager import AbstractRepositoriesManager
 from . import DocumentRepository
@@ -13,7 +14,7 @@ class RepositoriesManager(AbstractRepositoriesManager):
 
 
 async def init_tables_with_csv(
-        repositories_manager = RepositoriesManager(),
+        repositories_manager=RepositoriesManager(),
         csv_path=config.get_test_data_csv_path(),
 ):
     dataset = await CSVManipulator.read_csv(csv_path)

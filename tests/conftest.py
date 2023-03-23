@@ -2,10 +2,48 @@ import os
 import tempfile
 
 import pytest
+from elasticsearch import AsyncElasticsearch
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 
 from src import config
+
+
+@pytest.fixture
+def test_index_title():
+    return 'test_index'
+
+
+@pytest.fixture
+def test_index_mappings():
+    return {
+        'properties': {
+            'id': {
+                'type': 'long',
+            },
+            'text': {
+                'type': 'text',
+                'fields': {
+                    'raw': {
+                        'type': 'keyword',
+                    }
+                }
+            }
+        }
+    }
+
+
+@pytest.fixture
+def elasticsearch_host():
+    return config.get_test_elasticsearch_uri()
+
+
+@pytest.fixture
+def elastic_client(
+        elasticsearch_host,
+):
+    elastic_client = AsyncElasticsearch(elasticsearch_host)
+    return elastic_client
 
 
 @pytest.fixture

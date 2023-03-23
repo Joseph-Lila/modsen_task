@@ -9,14 +9,13 @@ from src.adapters.orm import (Document, DocumentRubric, Rubric,
                               async_session_factory)
 from src.adapters.repositories import AbstractRepository
 from src.domain.entities import Document as DocumentEntity
-from src.domain.entities.base_entity import BaseEntity
 
 
 class DocumentRepository(AbstractRepository):
     def __init__(self, async_session_factory_: async_sessionmaker[AsyncSession] = async_session_factory):
         self.async_session: async_sessionmaker[AsyncSession] = async_session_factory_
 
-    async def get_all(self) -> List[BaseEntity]:
+    async def get_all(self) -> List[DocumentEntity]:
         """
         Method for getting collection of entities.
 

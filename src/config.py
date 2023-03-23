@@ -46,3 +46,21 @@ def get_test_data_csv_path() -> str:
     :return: Str: path to csv.
     """
     return str(ROOT_DIR / 'assets' / 'task' / 'posts.csv')
+
+
+def get_elasticsearch_uri() -> str:
+    """
+    Method to get elasticsearch uri.
+    :return: str: uri.
+    """
+    host = os.environ['ELASTICSEARCH_URI']
+    return host
+
+
+def get_test_elasticsearch_uri() -> str:
+    """
+    Method to get elasticsearch test uri.
+    :return: str: uri.
+    """
+    host = os.environ['ELASTICSEARCH_TEST_URI']
+    return host

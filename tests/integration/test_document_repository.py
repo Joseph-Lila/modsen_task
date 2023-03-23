@@ -2,7 +2,7 @@ from datetime import datetime
 
 import pytest
 
-from src.adapters.orm import Rubric, create_tables
+from src.adapters.orm import create_tables
 from src.adapters.repositories.postgresql import DocumentRepository
 from src.domain.entities import Document as DocumentEntity
 
