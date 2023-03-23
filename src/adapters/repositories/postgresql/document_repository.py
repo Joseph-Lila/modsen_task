@@ -45,6 +45,13 @@ class DocumentRepository(AbstractRepository):
         async with self.async_session() as session:
             stmt = select(Document).filter_by(id=id_).options(immediateload(Document.rubrics))
             result = await session.scalar(stmt)
+        if result is not None:
+            result = DocumentEntity(
+                id=result.id,
+                text=result.text,
+                rubrics=[rubric.value for rubric in result.rubrics],
+                created_date=result.created_date,
+            )
         return result
 
     async def create(self, item: DocumentEntity):
