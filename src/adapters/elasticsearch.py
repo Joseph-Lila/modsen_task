@@ -32,6 +32,14 @@ async def create_index(
         index_title=INDEX_TITLE,
         mappings=MAPPING_FOR_INDEX,
 ):
+    """
+    Method to create an index.
+
+    :param elasticsearch_client: AsyncElasticsearch: client instance
+    :param index_title: str
+    :param mappings: dict
+    :return: None
+    """
     await elasticsearch_client.indices.create(
         index=index_title,
         mappings=mappings,
@@ -42,6 +50,13 @@ async def delete_index(
         elasticsearch_client: AsyncElasticsearch = elastic_client,
         index_title=INDEX_TITLE,
 ):
+    """
+    Method to delete an index.
+
+    :param elasticsearch_client: AsyncElasticsearch: client instance
+    :param index_title: str
+    :return: None
+    """
     await elasticsearch_client.indices.delete(index=index_title)
 
 
@@ -50,6 +65,14 @@ async def add_record(
         elasticsearch_client: AsyncElasticsearch = elastic_client,
         index_title=INDEX_TITLE,
 ) -> ObjectApiResponse:
+    """
+    Method to add a document in the index.
+
+    :param cmd: AddRecord: contains id and text
+    :param elasticsearch_client: AsyncElasticsearch: client instance
+    :param index_title: str
+    :return: ObjectApiResponse
+    """
     result = await elasticsearch_client.index(
         index=index_title,
         document={
@@ -65,6 +88,14 @@ async def delete_record(
         elasticsearch_client: AsyncElasticsearch = elastic_client,
         index_title=INDEX_TITLE,
 ):
+    """
+    Method to delete a document in the index.
+
+    :param cmd: DeleteRecord: contains doc_id (from database)
+    :param elasticsearch_client: AsyncElasticsearch: client instance
+    :param index_title: str
+    :return: None
+    """
     await elasticsearch_client.delete_by_query(
         index=index_title,
         query={
@@ -80,6 +111,14 @@ async def get_first_20_records_by_match(
         elasticsearch_client: AsyncElasticsearch = elastic_client,
         index_title=INDEX_TITLE,
 ) -> ObjectApiResponse:
+    """
+    Method to get first 20 records by text match.
+
+    :param cmd: GetFirst20RecordsByMatch: contains search text
+    :param elasticsearch_client: AsyncElasticsearch: client instance
+    :param index_title: str
+    :return: ObjectApiResponse
+    """
     result = await elasticsearch_client.search(
         index=index_title,
         size=20,
@@ -96,6 +135,13 @@ async def init_elasticsearch_with_db(
         repositories_manager: AbstractRepositoriesManager,
         elasticsearch_client: AsyncElasticsearch = elastic_client,
 ):
+    """
+    Method to initialize elasticsearch with data in the database.
+
+    :param repositories_manager: AbstractRepositoriesManager
+    :param elasticsearch_client: AsyncElasticsearch
+    :return: None
+    """
     documents = await repositories_manager.documents.get_all()
     for doc in documents:
         await add_record(
