@@ -98,7 +98,7 @@ def main():
     app.state.init_elastic_with_db = args.init_elastic_with_db
 
     app.include_router(APIRouter(routes=routes))
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app)
 
 
 if __name__ == '__main__':
