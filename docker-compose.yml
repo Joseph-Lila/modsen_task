@@ -3,16 +3,21 @@ version: "3"
 services:
 
   web:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8000:8000"
     depends_on:
       - elasticsearch
       - postgres
+    entrypoint:
+      - --host=127.0.0.1
+      - --port=8000
 
   elasticsearch:
     container_name: es-container
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.2.3
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.6.2
     environment:
       - xpack.security.enabled=false
       - "discovery.type=single-node"
@@ -22,13 +27,11 @@ services:
       - "9200:9200"
 
   postgres:
-    image: postgres:9.6
+    image: postgres:latest
+    restart: always
     environment:
-      - POSTGRESQL_HOST = 'localhost'
-      - POSTGRESQL_PORT = 5432
-      - POSTGRESQL_MAINTENANCE_DATABASE = 'modsen'
-      - POSTGRESQL_USERNAME = 'student'
-      - POSTGRESQL_PASSWORD = 'student'
+      - POSTGRES_USER='student'
+      - POSTGRES_PASSWORD='student'
     ports:
       - "5432:5432"
 

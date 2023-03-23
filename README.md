@@ -6,8 +6,14 @@
 [![Vkontakte Badge](https://img.shields.io/badge/VK-informational?style=flat&logo=vk&logoColor=white&color=red)](https://vk.com/lilalokikali)
 
 <h2>Содержание</h2>
-<h3>[1. Гайд по поднятию (Windows) (без Docker)](#windows_without_docker)</h3>
-<h3>[2. Гайд по поднятию (Windows) (с Docker)](#windows_with_docker)</h3>
+<h3>
+[1. Гайд по поднятию (Windows) (без Docker)](#windows_without_docker)
+</h3>
+<strike>
+<h3>
+[2. Гайд по поднятию (Windows) (с Docker)](#windows_with_docker)
+</h3>
+</strike>
 
 <a id="windows_without_docker"></a>
 <h2>Гайд по поднятию (Windows) (без Docker)</h2>
@@ -73,7 +79,9 @@ python -m src.entrypoints.fastapi_app
 13. The end :)
 
 <a id="windows_with_docker"></a>
-<h2>Гайд по поднятию (Windows) (с Docker)</h2>
+<strike>
+<h2 style="color:#FF0000">Гайд по поднятию (Windows) (с Docker)</h2>
+</strike>
 
 1. Перейти в папку с проектами python
 2. Открыть cmd (путь должен совпадать с путем к текущей папке) 

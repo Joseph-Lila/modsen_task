@@ -6,4 +6,4 @@ COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 EXPOSE 8000
 COPY . .
-CMD ["python3 -m src.entrypoints.fastapi_app" "--drop_create_tables True" "--drop_create_indices True" "--init_with_csv True" "--init_elastic_with_db True" "--initial_csv_path /assets/task/posts.csv"]
+RUN python -m src.entrypoints.fastapi_app --drop_create_tables True --drop_create_indices True --init_with_csv True --init_elastic_with_db True --initial_csv_path assets/task/posts.csv
