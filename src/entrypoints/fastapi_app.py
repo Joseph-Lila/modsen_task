@@ -1,6 +1,5 @@
 """ Module srс.entrypoints """
 import argparse
-import asyncio
 
 import uvicorn as uvicorn
 from elasticsearch import AsyncElasticsearch
